@@ -28,50 +28,54 @@ tab_analyze, tab_history = st.tabs(["Analyze", "History"])
 with tab_analyze:
     cv_file = st.file_uploader("CV (PDF)", type=["pdf"])
     job_description = st.text_area("Job description", height=220)
-    submitted = st.button("Analyze", type="primary", disabled=not (cv_file and job_description))
+    # Always clickable -- no Ctrl+Enter-to-commit dance. Missing input is
+    # handled as a plain message after the click instead of a disabled
+    # button, since Streamlit only re-evaluates a text_area's value on
+    # blur/Ctrl+Enter, which made the disabled state feel broken/laggy.
+    submitted = st.button("Analyze", type="primary")
 
     if submitted:
-        with st.spinner("Calling Gemini..."):
-            try:
-                response = requests.post(
-                    f"{BACKEND_URL}/api/analyze",
-                    files={"cv_file": (cv_file.name, cv_file.getvalue(), "application/pdf")},
-                    data={"job_description": job_description},
-                    timeout=60,
-                )
-                response.raise_for_status()
-            except requests.RequestException as exc:
-                st.error(f"Request failed: {exc}")
-            else:
-                payload = response.json()
-                result = payload["result"]
-                usage = payload["usage"]
+        if not cv_file:
+            st.warning("Please upload a CV (PDF) first.")
+        elif not job_description.strip():
+            st.warning("A job description is needed.")
+        else:
+            with st.spinner("Calling Gemini..."):
+                try:
+                    response = requests.post(
+                        f"{BACKEND_URL}/api/analyze",
+                        files={"cv_file": (cv_file.name, cv_file.getvalue(), "application/pdf")},
+                        data={"job_description": job_description},
+                        timeout=60,
+                    )
+                    response.raise_for_status()
+                except requests.RequestException as exc:
+                    st.error(f"Request failed: {exc}")
+                else:
+                    result = response.json()["result"]
 
-                st.metric("ATS match score", f"{result['ats_match_score']}/100")
-                st.write(result["summary"])
+                    st.metric("ATS match score", f"{result['ats_match_score']}/100")
+                    st.write(result["summary"])
 
-                st.subheader("Skill gaps")
-                for gap in result["skill_gaps"]:
-                    icon = "✅" if gap["present_in_cv"] else "⚠️"
-                    st.markdown(f"{icon} **{gap['skill']}**")
-                    if gap.get("evidence"):
-                        st.caption(f"Evidence: {gap['evidence']}")
-                    if gap.get("suggestion"):
-                        st.caption(f"Suggestion: {gap['suggestion']}")
+                    st.subheader("Skill gaps")
+                    for gap in result["skill_gaps"]:
+                        icon = "✅" if gap["present_in_cv"] else "⚠️"
+                        st.markdown(f"{icon} **{gap['skill']}**")
+                        if gap.get("evidence"):
+                            st.caption(f"Evidence: {gap['evidence']}")
+                        if gap.get("suggestion"):
+                            st.caption(f"Suggestion: {gap['suggestion']}")
 
-                if result["missing_keywords"]:
-                    st.subheader("Missing keywords")
-                    st.write(", ".join(result["missing_keywords"]))
+                    if result["missing_keywords"]:
+                        st.subheader("Missing keywords")
+                        st.write(", ".join(result["missing_keywords"]))
 
-                if result["bullet_rewrites"]:
-                    st.subheader("Bullet rewrite suggestions")
-                    for rewrite in result["bullet_rewrites"]:
-                        st.markdown(f"- ~~{rewrite['original']}~~")
-                        st.markdown(f"  → **{rewrite['rewritten']}**")
-                        st.caption(rewrite["rationale"])
-
-                st.subheader("Usage")
-                st.json(usage)
+                    if result["bullet_rewrites"]:
+                        st.subheader("Bullet rewrite suggestions")
+                        for rewrite in result["bullet_rewrites"]:
+                            st.markdown(f"- ~~{rewrite['original']}~~")
+                            st.markdown(f"  → **{rewrite['rewritten']}**")
+                            st.caption(rewrite["rationale"])
 
 with tab_history:
     st.button("Refresh")
