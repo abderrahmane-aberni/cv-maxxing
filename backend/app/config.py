@@ -14,7 +14,10 @@ class Settings:
     def __init__(self) -> None:
         self.gemini_api_key = os.getenv("GEMINI_API_KEY", "")
         self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
-        self.database_url = os.getenv("DATABASE_URL", "sqlite:///./cvmaxing.db")
+        # `or`, not a .getenv default: an empty-string env var (what Render
+        # stores when you leave a field blank in its dashboard) needs to
+        # fall back too, not just a fully-missing variable.
+        self.database_url = os.getenv("DATABASE_URL") or "sqlite:///./cvmaxing.db"
         self.max_upload_mb = int(os.getenv("MAX_UPLOAD_MB", "5"))
         # Rough per-1K-token cost estimates in USD, used only for the
         # per-request cost-tracking feature. Leave at 0 on Gemini's free tier.
