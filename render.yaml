@@ -1,11 +1,11 @@
-# Render Blueprint for the Resolve backend.
+# Render Blueprint for the CV-Maxxing backend.
 # Deploy: render.com -> New -> Blueprint -> point at this repo.
 # Still requires manually setting GEMINI_API_KEY (and DATABASE_URL, if using
 # Postgres instead of the SQLite default) as secret env vars in the Render
 # dashboard -- this file intentionally does not contain secrets.
 services:
   - type: web
-    name: resolve-backend
+    name: cv-maxxing-backend
     runtime: python
     plan: free
     rootDir: .

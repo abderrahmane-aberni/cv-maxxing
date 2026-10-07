@@ -1,4 +1,4 @@
-# Resolve — AI CV & job-fit analyser
+# CV-Maxxing — AI CV & job-fit analyser
 
 Upload a CV (PDF) and a job description. Get back a structured skills-gap
 report, an ATS-style keyword match score, and before/after bullet rewrite
@@ -11,7 +11,7 @@ into a reliable pipeline with structured, validated output.
 ## Architecture
 
 ```
-resolve/
+cv-maxxing/
 ├── backend/        FastAPI app (API, PDF parsing, Gemini client, DB)
 ├── frontend/        Streamlit UI
 ├── prompts/         Versioned prompt text + changelog (see below)

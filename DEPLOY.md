@@ -1,4 +1,4 @@
-# Deploying Resolve (Render + Streamlit Community Cloud)
+# Deploying CV-Maxxing (Render + Streamlit Community Cloud)
 
 Two pieces, two free services: the FastAPI backend on Render, the
 Streamlit frontend on Streamlit Community Cloud. Both deploy straight
@@ -20,8 +20,8 @@ instead (same approach as the Ledger project):
 ## 2. Backend on Render
 
 1. **(you)** Go to [render.com](https://render.com), sign in with GitHub.
-2. **(you)** New → Blueprint → select the `resolve` repo. Render reads
-   `render.yaml` from the repo root and proposes the `resolve-backend`
+2. **(you)** New → Blueprint → select the `cv-maxxing` repo. Render reads
+   `render.yaml` from the repo root and proposes the `cv-maxxing-backend`
    service.
 3. **(you)** Before deploying, set these environment variables in the
    Render dashboard (the blueprint leaves them blank on purpose — they're
@@ -29,7 +29,7 @@ instead (same approach as the Ledger project):
    - `GEMINI_API_KEY` — your key from aistudio.google.com
    - `DATABASE_URL` — the Postgres connection string from step 1
 4. Deploy. Render gives you a URL like
-   `https://resolve-backend-xxxx.onrender.com`. Visit
+   `https://cv-maxxing-backend-xxxx.onrender.com`. Visit
    `<that-url>/health` to confirm it's up (the free tier spins down when
    idle, so the first request after a quiet period takes ~30-60s to wake
    up — that's normal, not broken).
@@ -38,11 +38,11 @@ instead (same approach as the Ledger project):
 
 1. **(you)** Go to
    [share.streamlit.io](https://share.streamlit.io), sign in with GitHub.
-2. **(you)** New app → pick the `resolve` repo, branch `main`, main file
+2. **(you)** New app → pick the `cv-maxxing` repo, branch `main`, main file
    path `frontend/streamlit_app.py`.
 3. **(you)** In the app's "Advanced settings" → Secrets, add:
    ```toml
-   BACKEND_URL = "https://resolve-backend-xxxx.onrender.com"
+   BACKEND_URL = "https://cv-maxxing-backend-xxxx.onrender.com"
    ```
    (the exact URL Render gave you in step 2).
 4. Deploy. Streamlit gives you a public `*.streamlit.app` URL — that's

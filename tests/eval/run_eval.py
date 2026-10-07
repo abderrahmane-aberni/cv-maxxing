@@ -1,4 +1,4 @@
-"""Hand-checked eval harness for Resolve's Gemini pipeline.
+"""Hand-checked eval harness for CV-Maxxing's Gemini pipeline.
 
 This is NOT a rigorous benchmark -- it's a handful of hand-picked CV/JD
 pairs with a human-judged *range* the ATS score should fall in, run

@@ -1,4 +1,4 @@
-"""Streamlit frontend for Resolve: upload a CV PDF + paste a job
+"""Streamlit frontend for CV-Maxxing: upload a CV PDF + paste a job
 description, hit the FastAPI backend, and render the structured report."""
 import os
 
@@ -19,8 +19,8 @@ def _get_backend_url() -> str:
 
 BACKEND_URL = _get_backend_url()
 
-st.set_page_config(page_title="Resolve - CV / job-fit analyser", page_icon="📄")
-st.title("📄 Resolve")
+st.set_page_config(page_title="CV-Maxxing - CV / job-fit analyser", page_icon="📄")
+st.title("📄 CV-Maxxing")
 st.caption("Upload a CV (PDF) and a job description to get a structured skills-gap report.")
 
 tab_analyze, tab_history = st.tabs(["Analyze", "History"])

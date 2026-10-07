@@ -1,4 +1,4 @@
-"""FastAPI app for Resolve: upload a CV + job description, get a
+"""FastAPI app for CV-Maxxing: upload a CV + job description, get a
 structured skills-gap report, ATS match score, and bullet rewrite
 suggestions back from Gemini."""
 from __future__ import annotations
@@ -19,7 +19,7 @@ from .schemas import AnalyzeResponse, HistoryItem, HistoryListResponse
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Resolve", description="AI CV & job-fit analyser", version="0.1.0")
+app = FastAPI(title="CV-Maxxing", description="AI CV & job-fit analyser", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
