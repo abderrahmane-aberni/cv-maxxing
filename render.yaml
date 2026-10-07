@@ -1,8 +1,8 @@
-# Render Blueprint for the CV-Maxxing backend.
-# Deploy: render.com -> New -> Blueprint -> point at this repo.
-# Still requires manually setting GEMINI_API_KEY (and DATABASE_URL, if using
-# Postgres instead of the SQLite default) as secret env vars in the Render
-# dashboard -- this file intentionally does not contain secrets.
+# Render Blueprint for CV-Maxxing: backend (FastAPI) + frontend (Streamlit),
+# as two separate free web services. Deploy: render.com -> New -> Blueprint
+# -> point at this repo. Secret env vars (GEMINI_API_KEY, DATABASE_URL,
+# BACKEND_URL) are intentionally left blank here -- fill them in the
+# Render dashboard during/after the Blueprint setup.
 services:
   - type: web
     name: cv-maxxing-backend
@@ -22,3 +22,16 @@ services:
         value: "5"
       - key: RATE_LIMIT_GLOBAL_PER_DAY
         value: "50"
+
+  - type: web
+    name: cv-maxxing-frontend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: .
+    envVars:
+      # Set this to the cv-maxxing-backend service's URL once it exists
+      # (e.g. https://cv-maxxing-backend-xxxx.onrender.com) -- no trailing
+      # slash, no /health on the end.
+      - key: BACKEND_URL
+        sync: false
