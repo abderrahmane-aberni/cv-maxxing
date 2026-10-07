@@ -109,6 +109,19 @@ lands in the middle) rather than the model just returning a flat 70 for
 everything. Results are written to `tests/eval/results.json` and worth
 re-running after any prompt change, to catch a regression before it ships.
 
+Last run (2026-10-07, `gemini-3.5-flash-lite`, prompt v1) -- 4/4 within
+the expected range:
+
+| Case | Score | Expected | Result |
+|---|---|---|---|
+| Strong match (all requirements present) | 90 | 80-100 | PASS |
+| Partial match (right stack, short on years + AWS/CI-CD) | 60 | 40-70 | PASS |
+| Adjacent-stack mismatch (Node.js CV vs. Python JD) | 35 | 15-40 | PASS |
+| Domain mismatch (marketing CV vs. backend JD) | 0 | 0-20 | PASS |
+
+The full output, including per-case summaries and token usage, is in
+`tests/eval/results.json`.
+
 ## Deployment
 
 See [DEPLOY.md](DEPLOY.md) for the full Render (backend) + Streamlit

@@ -1,0 +1,45 @@
+{
+  "run_at": "2026-10-07T13:05:01.875543+00:00",
+  "results": [
+    {
+      "name": "partial_match_backend",
+      "score": 60,
+      "expected_range": [
+        40,
+        70
+      ],
+      "passed": true,
+      "summary": "Alex Morgan has solid foundational backend skills in Python, FastAPI, and PostgreSQL, aligning well with the technical requirements of the role. However, the candidate falls short on total years of experience, cloud platforms like AWS, and CI/CD tools specified in the job description."
+    },
+    {
+      "name": "strong_match_backend",
+      "score": 90,
+      "expected_range": [
+        80,
+        100
+      ],
+      "passed": true,
+      "summary": "Priya Shah is an exceptionally strong match for the Backend Engineer role, exceeding the minimum years of experience and demonstrating direct hands-on proficiency with almost all core requirements including Python, FastAPI, PostgreSQL, AWS, and Docker. The only minor gaps are the specific nice-to-have message queue technologies like Kafka or SQS, which can be addressed by emphasizing existing asynchronous cloud processing experience."
+    },
+    {
+      "name": "domain_mismatch",
+      "score": 0,
+      "expected_range": [
+        0,
+        20
+      ],
+      "passed": true,
+      "summary": "There is a complete mismatch between the candidate's CV, which is in marketing, and the job description, which is for a Backend Engineer. Because the candidate lacks any software engineering experience or the required technical stack, the resume is entirely unaligned with this role."
+    },
+    {
+      "name": "adjacent_stack_mismatch",
+      "score": 35,
+      "expected_range": [
+        15,
+        40
+      ],
+      "passed": true,
+      "summary": "Jordan has solid backend engineering experience with Node.js and TypeScript, but lacks the core Python and AWS requirements specified in the job description. The candidate does share experience with Docker and CI/CD concepts, but alignment on the primary tech stack is low."
+    }
+  ]
+}
