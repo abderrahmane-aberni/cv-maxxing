@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Env (never commit real secrets)
+.env
+backend/.env
+
+# Local DB
+*.db
+*.sqlite3
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
