@@ -92,6 +92,31 @@ vars to the current per-1K-token price if you want the field to mean
 something (e.g. if you outgrow the free tier, or just want to demonstrate
 cost-awareness with realistic numbers).
 
+## Eval
+
+`tests/eval/` holds a small, hand-checked eval set: a handful of CV/JD
+pairs with a human-judged *expected score range* and a written rationale
+(see `tests/eval/eval_cases.py`). Run it against the live API with:
+
+```bash
+backend\.venv\Scripts\python.exe tests\eval\run_eval.py
+```
+
+It's not a rigorous benchmark -- four cases proves nothing statistically.
+What it does prove: the scores move in the right *direction* (strong
+match scores high, domain mismatch scores near zero, partial overlap
+lands in the middle) rather than the model just returning a flat 70 for
+everything. Results are written to `tests/eval/results.json` and worth
+re-running after any prompt change, to catch a regression before it ships.
+
+## Deployment
+
+See [DEPLOY.md](DEPLOY.md) for the full Render (backend) + Streamlit
+Community Cloud (frontend) walkthrough, including why SQLite needs to
+become Postgres for a real deployment and how the rate limiter in
+`backend/app/rate_limit.py` keeps a public link from burning through
+Gemini's free-tier quota.
+
 ## Known limitations (honest, on purpose)
 
 - Scanned/image-only PDFs aren't supported — there's no OCR step, only

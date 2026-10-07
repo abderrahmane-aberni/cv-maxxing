@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -13,6 +13,7 @@ from .config import get_settings
 from .db import Analysis, get_db, init_db
 from .gemini_client import GeminiOutputError, analyze
 from .pdf_parser import PDFTextExtractionError, extract_text_from_pdf
+from .rate_limit import RateLimitExceeded, rate_limiter
 from .schemas import AnalyzeResponse, HistoryItem, HistoryListResponse
 
 logging.basicConfig(level=logging.INFO)
@@ -40,11 +41,20 @@ def health() -> dict:
 
 @app.post("/api/analyze", response_model=AnalyzeResponse)
 async def analyze_cv(
+    request: Request,
     cv_file: UploadFile = File(..., description="CV as a PDF"),
     job_description: str = Form(..., min_length=20),
     db: Session = Depends(get_db),
 ) -> AnalyzeResponse:
     settings = get_settings()
+
+    client_ip = request.client.host if request.client else "unknown"
+    try:
+        rate_limiter.check(client_ip)
+    except RateLimitExceeded as exc:
+        raise HTTPException(
+            429, str(exc), headers={"Retry-After": str(exc.retry_after_seconds)}
+        ) from exc
 
     if cv_file.content_type not in ("application/pdf", "application/octet-stream"):
         raise HTTPException(400, "cv_file must be a PDF.")

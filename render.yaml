@@ -1,0 +1,24 @@
+# Render Blueprint for the Resolve backend.
+# Deploy: render.com -> New -> Blueprint -> point at this repo.
+# Still requires manually setting GEMINI_API_KEY (and DATABASE_URL, if using
+# Postgres instead of the SQLite default) as secret env vars in the Render
+# dashboard -- this file intentionally does not contain secrets.
+services:
+  - type: web
+    name: resolve-backend
+    runtime: python
+    plan: free
+    rootDir: .
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --app-dir backend
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.5-flash-lite
+      - key: DATABASE_URL
+        sync: false
+      - key: RATE_LIMIT_PER_IP_PER_HOUR
+        value: "5"
+      - key: RATE_LIMIT_GLOBAL_PER_DAY
+        value: "50"

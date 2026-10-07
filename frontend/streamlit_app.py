@@ -5,7 +5,19 @@ import os
 import requests
 import streamlit as st
 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+
+def _get_backend_url() -> str:
+    """Streamlit Community Cloud secrets (set via the app's Secrets panel)
+    take priority; falls back to a plain env var for local/Docker use."""
+    try:
+        if "BACKEND_URL" in st.secrets:
+            return st.secrets["BACKEND_URL"]
+    except Exception:
+        pass
+    return os.getenv("BACKEND_URL", "http://localhost:8000")
+
+
+BACKEND_URL = _get_backend_url()
 
 st.set_page_config(page_title="Resolve - CV / job-fit analyser", page_icon="📄")
 st.title("📄 Resolve")

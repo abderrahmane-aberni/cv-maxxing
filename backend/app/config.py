@@ -20,6 +20,11 @@ class Settings:
         # per-request cost-tracking feature. Leave at 0 on Gemini's free tier.
         self.cost_per_1k_input_tokens = float(os.getenv("COST_PER_1K_INPUT", "0.0"))
         self.cost_per_1k_output_tokens = float(os.getenv("COST_PER_1K_OUTPUT", "0.0"))
+        # Usage cap for a public deployment: protects Gemini's free-tier
+        # request quota from being exhausted by strangers hitting the demo
+        # link. See app/rate_limit.py.
+        self.rate_limit_per_ip_per_hour = int(os.getenv("RATE_LIMIT_PER_IP_PER_HOUR", "5"))
+        self.rate_limit_global_per_day = int(os.getenv("RATE_LIMIT_GLOBAL_PER_DAY", "50"))
 
     def validate(self) -> None:
         if not self.gemini_api_key:
