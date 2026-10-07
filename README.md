@@ -1,10 +1,9 @@
 # CV-Maxxing — AI CV & job-fit analyser
 
-**Live demo:** see the repo's About section / latest DEPLOY.md run for the
-current link — the frontend moved off Streamlit Community Cloud (its free
-hosting shows the deployer's GitHub avatar on every public app with no
-way to disable it) to a second Render service instead. First load after
-idle can take ~30-60s on Render's free tier.
+**Live demo: https://cv-maxxing-frontend.onrender.com/**
+(hosted on Render, not Streamlit Community Cloud — their free hosting
+shows the deployer's GitHub avatar on every public app with no way to
+disable it. First load after idle can take ~30-60s on Render's free tier.)
 
 Upload a CV (PDF) and a job description. Get back a structured skills-gap
 report, an ATS-style keyword match score, and before/after bullet rewrite
